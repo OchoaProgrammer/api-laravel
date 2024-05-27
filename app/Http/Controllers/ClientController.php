@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class ClientController extends Controller
 {
@@ -32,7 +32,20 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $client= new Client;
+        $client->name = $request->name;
+        $client->email = $request->email;
+        $client->phone = $request->phone;
+        $client->adress = $request->adress;
+        $client->save();
+
+        $finish = [
+            'message' =>'Client created successfully',
+            'client' => $client
+        ];
+        return response() -> json($finish);
+
+
     }
 
     /**
@@ -40,7 +53,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return response()->json($client);
     }
 
     /**
@@ -48,7 +61,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        
     }
 
     /**
@@ -56,7 +69,17 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $client->name = $request->name;
+        $client->email = $request->email;
+        $client->phone = $request->phone;
+        $client->adress = $request->adress;
+        $client->save();
+
+        $finish = [
+           'message' =>'Client updated successfully',
+            'client' => $client
+        ];
+        return response() -> json($finish);     
     }
 
     /**
@@ -64,6 +87,12 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        $finish = [
+           'message' =>'Client deleted successfully',
+            'client' => $client
+        ];
+        return response() -> json($finish);
     }
 }
