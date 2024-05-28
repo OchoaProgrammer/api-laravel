@@ -12,7 +12,8 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        //
+        $services=Services::all();
+        return response()-> json($services);
     }
 
     /**
@@ -28,7 +29,11 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $services=new Services;
+        $services->name=$request->name;
+        $services->price=$request->price;
+        $services->save();
+        return response()->json($services);
     }
 
     /**
@@ -36,7 +41,7 @@ class ServicesController extends Controller
      */
     public function show(Services $services)
     {
-        //
+       return response()->json($services);
     }
 
     /**
@@ -52,7 +57,13 @@ class ServicesController extends Controller
      */
     public function update(Request $request, Services $services)
     {
-        //
+        $services = Services::find($services->id);
+        $services->name = $request->name;
+        $services->price = $request->price;
+        $services->save();
+        return response()->json($services);
+        //return response()->json($services);
+
     }
 
     /**
@@ -60,6 +71,8 @@ class ServicesController extends Controller
      */
     public function destroy(Services $services)
     {
-        //
+        $services = Services::find($services->id);
+        $services->delete();
+        return response()->json($services); 
     }
 }

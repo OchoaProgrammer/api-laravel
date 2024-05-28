@@ -59,9 +59,8 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
-    {
-        
+    public function edit(Client $client) {
+    
     }
 
     /**
@@ -69,6 +68,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
+        $client = Client::find($client->id);
         $client->name = $request->name;
         $client->email = $request->email;
         $client->phone = $request->phone;
