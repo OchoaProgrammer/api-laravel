@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Services;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class ServicesController extends Controller
@@ -12,7 +12,7 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        $services=Services::all();
+        $services=Service::all();
         return response()-> json($services);
     }
 
@@ -29,25 +29,25 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        $services=new Services;
-        $services->name=$request->name;
-        $services->price=$request->price;
-        $services->save();
-        return response()->json($services);
+        $service=new Service;
+        $service->name=$request->name;
+        $service->price=$request->price;
+        $service->save();
+        return response()->json($service);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Services $services)
+    public function show(Service $service)
     {
-       return response()->json($services);
+       return response()->json($service);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Services $services)
+    public function edit(Service $service)
     {
         //
     }
@@ -55,24 +55,37 @@ class ServicesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Services $services)
+    public function update(Request $request, Service $service)
     {
-        $services = Services::find($services->id);
-        $services->name = $request->name;
-        $services->price = $request->price;
-        $services->save();
-        return response()->json($services);
-        //return response()->json($services);
+        $service = Service::find($service->id);
+        $service->name = $request->name;
+        $service->price = $request->price;
+        $service->save();
+        return response()->json($service);
+        //return response()->json($service);
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Services $services)
+    public function destroy(Service $service)
     {
-        $services = Services::find($services->id);
-        $services->delete();
-        return response()->json($services); 
+        $service = Service::find($service->id);
+        $service->delete();
+        return response()->json($service); 
     }
+
+    public function clients(Request $request ){
+        $service = Service::find($request->service_id);
+        $clients = $service->clients;
+        $finish = [
+            'message' => "success", 
+            'service' => $service,
+            'clients' => $clients
+            
+
+        ];
+        return response()->json($finish);
+    } 
 }

@@ -15,8 +15,19 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return response() -> json($clients);
-
+        $array =[];
+        foreach ($clients as $client){
+        
+        $array[] = [
+            'id' => $client->id,
+            'name' => $client->name,
+            'email' => $client->email,
+            'phone' => $client->phone,
+            'adress' => $client->adress,
+           'services' => $client->services
+        ];
+        }
+        return response()->json($array);
     }
 
     /**
@@ -53,7 +64,11 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return response()->json($client);
+        $finish = [
+            'client' => $client,
+            'services' => $client->services
+        ];
+        return response()->json($finish);
     }
 
     /**
@@ -95,4 +110,30 @@ class ClientController extends Controller
         ];
         return response() -> json($finish);
     }
+    public function attach(Request $request)
+    {
+     
+        $client = Client::find($request->client_id);
+        $client->services()->attach($request->service_id);
+        $finish= [
+            'message' =>'Client attach successfully',
+             'client' => $client,
+             'service' => $request->service_id
+             
+         ];
+         return response() -> json($finish);
+    }
+
+    public function detach(Request $request){
+        $client = Client::find($request->client_id);
+        $client->services()->detach($request->service_id);
+        $finish= [
+            'message' =>'Client detach successfully',
+             'client' => $client,
+             'service' => $request->service_id
+             
+         ];
+         return response() -> json($finish);
+    }
+
 }
