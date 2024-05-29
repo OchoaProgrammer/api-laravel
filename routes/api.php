@@ -29,7 +29,7 @@ Route::put('/services/{service}', [ServicesController::class,'update']);
 Route::post('/services', [ServicesController::class,'store']);
 Route::delete('/services/{service}', [ServicesController::class,'destroy']);
 Route::post('/services/clients', [ServicesController::class, 'clients']);
-
+Route::get('/services/{id}/clients', [ServicesController::class, 'clients']);
 
 
 

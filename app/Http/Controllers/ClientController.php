@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -112,17 +113,33 @@ class ClientController extends Controller
     }
     public function attach(Request $request)
     {
-     
+        // Buscar el cliente por ID
         $client = Client::find($request->client_id);
-        $client->services()->attach($request->service_id);
-        $finish= [
-            'message' =>'Client attach successfully',
-             'client' => $client,
-             'service' => $request->service_id
-             
-         ];
-         return response() -> json($finish);
+    
+        // Verificar si el cliente existe
+        if ($client) {
+            // Adjuntar el servicio al cliente
+            $client->services()->attach($request->service_id);
+    
+            // Preparar la respuesta
+            $finish = [
+                'message' => 'Servicio añadido al cliente exitosamente',
+                'client' => $client,
+                'service' => $request->service_id
+            ];
+        } else {
+            // Manejar el caso donde el cliente no existe
+            $finish = [
+                'message' => 'Cliente no encontrado',
+                'client_id' => $request->client_id,
+                'service' => $request->service_id
+            ];
+        }
+    
+        // Devolver la respuesta en formato JSON
+        return response()->json($finish);
     }
+    
 
     public function detach(Request $request){
         $client = Client::find($request->client_id);

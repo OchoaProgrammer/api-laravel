@@ -76,16 +76,29 @@ class ServicesController extends Controller
         return response()->json($service); 
     }
 
-    public function clients(Request $request ){
-        $service = Service::find($request->service_id);
-        $clients = $service->clients;
-        $finish = [
-            'message' => "success", 
-            'service' => $service,
-            'clients' => $clients
-            
+    public function clients($id)
+    {
+        // Buscar el servicio por ID
+        $service = Service::with('clients')->find($id);
 
-        ];
+        // Verificar si el servicio existe
+        if ($service) {
+            // Preparar la respuesta con el servicio y sus clientes
+            $finish = [
+                'message' => 'Éxito',
+                'service' => $service,
+                'clients' => $service->clients
+            ];
+        } else {
+            // Manejar el caso donde el servicio no existe
+            $finish = [
+                'message' => 'Servicio no encontrado',
+                'service_id' => $id
+            ];
+        }
+
+        // Devolver la respuesta en formato JSON
         return response()->json($finish);
-    } 
+    }
 }
+
